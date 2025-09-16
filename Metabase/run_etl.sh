@@ -2,24 +2,31 @@
 
 # ===============================
 # ETL Runner - Execute all SQL scripts
-# Logs are stored in $LOG_ROOT/YYYY-MM/etl_log_YYYY-MM-DD.txt
+# Logs are stored in $LOG_ROOT/YYYY-MM/etl_log_YYYY-MM-DD.log
 # ===============================
 
 set -euo pipefail
 
-# Load database credentials from .env if present
+# Load .env if present (useful for local dev)
 if [ -f .env ]; then
     # Remove potential Windows line endings
     sed -i 's/\r$//' .env
     source .env
+    echo "ℹ️  Loaded variables from .env"
 else
-    echo "❌ .env file not found"
-    exit 1
+    echo "⚠️  No .env file found, expecting variables from environment"
 fi
 
-# Defaults (can be overridden in .env)
+# Required variables (either from .env or environment)
+: "${DB_NAME:?❌ DB_NAME is not set}"
+: "${DB_USER:?❌ DB_USER is not set}"
+: "${DB_PASS:?❌ DB_PASS is not set}"
+: "${DB_HOST:?❌ DB_HOST is not set}"
+: "${DB_PORT:?❌ DB_PORT is not set}"
+: "${LOG_ROOT:?❌ LOG_ROOT is not set}"
+
+# Defaults (can be overridden by .env / env)
 SQL_FOLDER="${SQL_FOLDER:-./sql_scripts}"
-LOG_ROOT="${LOG_ROOT:-./logs}"
 
 # Check SQL folder exists
 if [ ! -d "$SQL_FOLDER" ]; then
