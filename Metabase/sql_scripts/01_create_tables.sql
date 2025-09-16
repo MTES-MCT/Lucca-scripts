@@ -49,8 +49,7 @@ CREATE TABLE logs (
                       utilisateur_id INT NOT NULL,        -- direct user ID
                       connexion_date DATETIME NOT NULL,   -- connection timestamp
 
-                      INDEX idx_user_date (utilisateur_id, connexion_date),
-                      PRIMARY KEY (utilisateur_id)
+                      INDEX idx_user_date (utilisateur_id, connexion_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

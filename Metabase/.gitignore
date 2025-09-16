@@ -1,0 +1,7 @@
+# =============================
+# Metabase folder .gitignore
+# =============================
+
+# Ignore any local DB dumps
+*.log
+.env

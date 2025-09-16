@@ -51,7 +51,6 @@ WHERE story.status IN (
 -- =====================================================
 -- Insert controls (inside) – one line per linked human
 -- =====================================================
--- TODO Need to duplicate lines for each human linked
 INSERT INTO history (
     dossier_id,
     adherent_id,
@@ -69,14 +68,14 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_control control
+FROM lucca.lucca_minute_human human
+         LEFT JOIN lucca.lucca_minute_control_linked_human_minute humanLinked ON human.id = humanLinked.human_id
+         LEFT JOIN lucca.lucca_minute_control control ON humanLinked.control_id = control.id
          LEFT JOIN lucca.lucca_minute minute ON minute.id = control.minute_id
     LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
     LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
     LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
     LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
-    LEFT JOIN lucca.lucca_minute_control_linked_human_control humansLinked
-    ON humansLinked.control_id = control.id
 WHERE control.stateControl = 'choice.state.inside';
 
 -- =====================================================

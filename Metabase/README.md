@@ -19,27 +19,44 @@ metabase/
 
 ### Configuration
 
-Éditer `run_etl.sh` pour configurer la connexion à MariaDB :
+Créer un fichier .env au même niveau que `run_etl.sh` pour configurer la connexion à MariaDB :
 
 ```bash
-DB_NAME="lucca_simplified"
-DB_USER="votre_utilisateur"
-DB_PASS="votre_motdepasse"
-DB_HOST="localhost"
+# Database connection
+DB_NAME=lucca_simplified
+DB_USER=user
+DB_PASS=password
+DB_HOST=host
 DB_PORT=3306
-SQL_FOLDER="./sql_scripts"
-LOG_FILE="./etl_log.txt"```
+
+# Folder to store logs (default: ./logs)
+LOG_ROOT=./logs
+```
 
 ### Exécution manuelle
 
 Rendre le script exécutable et le lancer :
 
-```chmod +x run_etl.sh
-./run_etl.sh```
+```bash
+chmod +x run_etl.sh
+./run_etl.sh
+```
 
 Les logs seront écrits dans etl_log.txt.
 
-Automatisation avec cron
+###  Automatisation avec cron
 
-Pour exécuter le script automatiquement, ajouter une entrée dans le crontab.
+Pour exécuter le script automatiquement, ajouter une entrée dans le crontab pour exécuter run_etl.sh à la fréquence souhaité.
 
+###  Problèmes courants
+
+Si une erreur similaire à l'erreur suivante est présente : 
+```
+=== Starting ETL job at Tue Sep 16 10:51:08 CEST 2025 ===
+Executing ./sql_scripts/01_create_tables.sql ...
+'). Legal suffix characters are: K, M, G, T, P, E
+' to 'port'r while setting value '33066
+❌ Error executing ./sql_scripts/01_create_tables.sql
+```
+
+Exécuter : `dos2unix .env`

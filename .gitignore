@@ -1,0 +1,6 @@
+# =============================
+# Root folder .gitignore
+# =============================
+
+# Ignore phpstrom folders
+.idea/
