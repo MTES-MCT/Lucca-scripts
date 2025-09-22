@@ -4,13 +4,13 @@
 -- =====================================================
 
 -- Switch to the simplified database
-USE lucca_simplified;
+-- USE lucca_simplified;
 
 -- Clear existing data before loading
-TRUNCATE users;
+TRUNCATE stats_users;
 
 -- Insert users with a stable, unique, and anonymized identifier
-INSERT INTO users (
+INSERT INTO stats_users (
     adherent_id,
     departement,
     appartenance,

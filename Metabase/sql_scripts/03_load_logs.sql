@@ -3,13 +3,13 @@
 -- Load user connection logs into the simplified database
 -- =====================================================
 
-USE lucca_simplified;
+-- USE lucca_simplified;
 
 -- Clear existing data before loading
-TRUNCATE logs;
+TRUNCATE stats_logs;
 
 -- Insert connection logs
-INSERT INTO logs (
+INSERT INTO stats_logs (
     utilisateur_id,
     connexion_date
 )

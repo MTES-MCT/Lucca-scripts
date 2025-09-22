@@ -3,16 +3,16 @@
 -- Load historical actions into the simplified database
 -- =====================================================
 
-USE lucca_simplified;
+-- USE lucca_simplified;
 
 -- Clean existing history (optional depending on ETL frequency)
-TRUNCATE history;
+TRUNCATE stats_history;
 
 -- =====================================================
 -- Insert minute stories
 -- Each story corresponds to an action performed on a folder/dossier
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -51,7 +51,7 @@ WHERE story.status IN (
 -- =====================================================
 -- Insert controls (inside) – one line per linked human
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -81,7 +81,7 @@ WHERE control.stateControl = 'choice.state.inside';
 -- =====================================================
 -- Insert controls (outside)
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -109,7 +109,7 @@ WHERE control.stateControl = 'choice.state.outside';
 -- =====================================================
 -- Insert folders (PV avec Natinfs)
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -141,7 +141,7 @@ WHERE EXISTS (
 -- =====================================================
 -- Insert folders (PV sans Natinfs)
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -173,7 +173,7 @@ WHERE NOT EXISTS (
 -- =====================================================
 -- Insert closure (with regularization / remis en état)
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,
@@ -201,7 +201,7 @@ WHERE closure.natureRegularized = 'choice.natureRegularized.field';
 -- =====================================================
 -- Insert closure (other reasons)
 -- =====================================================
-INSERT INTO history (
+INSERT INTO stats_history (
     dossier_id,
     adherent_id,
     action_date,

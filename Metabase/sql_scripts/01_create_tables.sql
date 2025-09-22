@@ -3,14 +3,14 @@
 -- Create simplified tables for Lucca ETL
 -- =====================================================
 
-USE lucca_simplified;
+-- USE lucca_simplified;
 -- =====================================================
 -- USERS TABLE
 -- Stores user-level information (adherent + user link)
 -- =====================================================
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS stats_users;
 
-CREATE TABLE users (
+CREATE TABLE stats_users (
     -- Stable anonymized identifier for adherent (SHA2 hash)
                        adherent_id CHAR(64) NOT NULL,
 
@@ -37,9 +37,9 @@ CREATE TABLE users (
 -- LOGS TABLE
 -- Stores connection history of users
 -- =====================================================
-DROP TABLE IF EXISTS logs;
+DROP TABLE IF EXISTS stats_logs;
 
-CREATE TABLE logs (
+CREATE TABLE stats_logs (
                       utilisateur_id INT NOT NULL,        -- direct user ID
                       connexion_date DATETIME NOT NULL,   -- connection timestamp
 
@@ -51,9 +51,9 @@ CREATE TABLE logs (
 -- HISTORY TABLE
 -- Stores historical actions of adherents on dossiers
 -- =====================================================
-DROP TABLE IF EXISTS history;
+DROP TABLE IF EXISTS stats_history;
 
-CREATE TABLE history (
+CREATE TABLE stats_history (
                          dossier_id INT NOT NULL,        -- identifier of the dossier
                          adherent_id INT NOT NULL,       -- unique adherent identifier
                          action_date DATETIME NOT NULL,  -- date of the action
