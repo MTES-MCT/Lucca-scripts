@@ -3,6 +3,7 @@
 -- Create simplified tables for Lucca ETL
 -- =====================================================
 
+USE lucca_simplified;
 -- =====================================================
 -- USERS TABLE
 -- Stores user-level information (adherent + user link)
