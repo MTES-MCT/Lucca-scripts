@@ -7,6 +7,23 @@
 
 set -euo pipefail
 
+WITH_INIT=false
+
+# Parse options
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --with-init)
+            WITH_INIT=true
+            shift
+            ;;
+        *)
+            echo "❌ Unknown option: $1"
+            echo "Usage: $0 [--with-init]"
+            exit 1
+            ;;
+    esac
+done
+
 # Load .env if present (useful for local dev)
 if [ -f .env ]; then
     # Remove potential Windows line endings
@@ -27,20 +44,33 @@ fi
 
 # Defaults (can be overridden by .env / env)
 SQL_FOLDER="${SQL_FOLDER:-./sql_scripts}"
+SQL_INIT_FOLDER="${SQL_INIT_FOLDER:-./sql_scripts_init}"
 
-# Check SQL folder exists
-if [ ! -d "$SQL_FOLDER" ]; then
-    echo "❌ SQL folder '$SQL_FOLDER' does not exist"
-    exit 1
-fi
+# Function to execute SQL scripts from a given folder
+run_sql_scripts() {
+    local folder="$1"
+    local label="$2"
 
-# Check there are .sql files
-shopt -s nullglob
-SQL_FILES=("$SQL_FOLDER"/*.sql)
-if [ ${#SQL_FILES[@]} -eq 0 ]; then
-    echo "❌ No SQL files found in '$SQL_FOLDER'"
-    exit 1
-fi
+    if [ ! -d "$folder" ]; then
+        echo "⚠️  $label folder '$folder' does not exist, skipping"
+        return
+    fi
+
+    shopt -s nullglob
+    local sql_files=("$folder"/*.sql)
+    if [ ${#sql_files[@]} -eq 0 ]; then
+        echo "⚠️  No SQL files found in '$folder', skipping"
+        return
+    fi
+
+    for sql_file in "${sql_files[@]}"; do
+        echo "Executing $label script: $sql_file ..." | tee -a "$LOG_FILE"
+        if ! mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" < "$sql_file"; then
+            echo "❌ Error executing $sql_file" | tee -a "$LOG_FILE"
+            exit 1
+        fi
+    done
+}
 
 # Create monthly log folder
 MONTH_DIR="$LOG_ROOT/$(date +'%Y-%m')"
@@ -51,13 +81,12 @@ LOG_FILE="$MONTH_DIR/etl_log_$(date +'%Y-%m-%d').log"
 
 echo "=== Starting ETL job at $(date) ===" | tee -a "$LOG_FILE"
 
-# Loop through SQL files
-for sql_file in "${SQL_FILES[@]}"; do
-    echo "Executing $sql_file ..." | tee -a "$LOG_FILE"
-    if ! mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" < "$sql_file"; then
-        echo "❌ Error executing $sql_file" | tee -a "$LOG_FILE"
-        exit 1
-    fi
-done
+# Run init scripts if requested
+if [ "$WITH_INIT" = true ]; then
+    run_sql_scripts "$SQL_INIT_FOLDER" "INIT"
+fi
+
+# Run main scripts
+run_sql_scripts "$SQL_FOLDER" "MAIN"
 
 echo "=== ETL job finished successfully at $(date) ===" | tee -a "$LOG_FILE"

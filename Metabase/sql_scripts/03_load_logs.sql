@@ -16,5 +16,5 @@ INSERT INTO stats_logs (
 SELECT
     u.id AS utilisateur_id,   -- direct user ID from Lucca
     l.createdAt AS connexion_date
-FROM lucca.lucca_log l
-         LEFT JOIN lucca.lucca_user u ON l.user_id = u.id WHERE l.status = 'status.connection';
+FROM lucca_log l
+         LEFT JOIN lucca_user u ON l.user_id = u.id WHERE l.status = 'status.connection';

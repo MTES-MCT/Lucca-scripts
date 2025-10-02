@@ -47,14 +47,14 @@ SELECT
     -- Original user ID from Lucca (for reference)
     u.id AS utilisateur_id
 
-FROM lucca.lucca_adherent a
-         LEFT JOIN lucca.lucca_department d ON a.department_id = d.id
-         LEFT JOIN lucca.lucca_user u ON a.user_id = u.id
-         LEFT JOIN lucca.lucca_parameter_town lpt ON a.town_id = lpt.id
-         LEFT JOIN lucca.lucca_parameter_intercommunal lpi ON a.intercommunal_id = lpi.id
-         LEFT JOIN lucca.lucca_parameter_service lps ON a.service_id = lps.id
-         LEFT JOIN lucca.lucca_user_linked_group linkGroup ON u.id = linkGroup.user_id
-         LEFT JOIN lucca.lucca_user_group g ON linkGroup.group_id = g.id
+FROM lucca_adherent a
+         LEFT JOIN lucca_department d ON a.department_id = d.id
+         LEFT JOIN lucca_user u ON a.user_id = u.id
+         LEFT JOIN lucca_parameter_town lpt ON a.town_id = lpt.id
+         LEFT JOIN lucca_parameter_intercommunal lpi ON a.intercommunal_id = lpi.id
+         LEFT JOIN lucca_parameter_service lps ON a.service_id = lps.id
+         LEFT JOIN lucca_user_linked_group linkGroup ON u.id = linkGroup.user_id
+         LEFT JOIN lucca_user_group g ON linkGroup.group_id = g.id
 
 -- Group by all non-aggregated fields to avoid duplicate rows
 GROUP BY

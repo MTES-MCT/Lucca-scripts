@@ -35,12 +35,12 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_minute_story story
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = story.minute_id
-    LEFT JOIN lucca.lucca_department department ON department.id = story.department_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+FROM lucca_minute_minute_story story
+         LEFT JOIN lucca_minute minute ON minute.id = story.minute_id
+    LEFT JOIN lucca_department department ON department.id = story.department_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
 WHERE story.status IN (
     'choice.statusMinute.open',
     'choice.statusMinute.courier',
@@ -68,14 +68,14 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_human human
-         LEFT JOIN lucca.lucca_minute_control_linked_human_minute humanLinked ON human.id = humanLinked.human_id
-         LEFT JOIN lucca.lucca_minute_control control ON humanLinked.control_id = control.id
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = control.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_human human
+         LEFT JOIN lucca_minute_control_linked_human_minute humanLinked ON human.id = humanLinked.human_id
+         LEFT JOIN lucca_minute_control control ON humanLinked.control_id = control.id
+         LEFT JOIN lucca_minute minute ON minute.id = control.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE control.stateControl = 'choice.state.inside';
 
 -- =====================================================
@@ -98,12 +98,12 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_control control
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = control.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_control control
+         LEFT JOIN lucca_minute minute ON minute.id = control.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE control.stateControl = 'choice.state.outside';
 
 -- =====================================================
@@ -126,15 +126,15 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_folder folder
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = folder.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_folder folder
+         LEFT JOIN lucca_minute minute ON minute.id = folder.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE EXISTS (
     SELECT 1
-    FROM lucca.lucca_minute_folder_linked_natinf natinfsLinked
+    FROM lucca_minute_folder_linked_natinf natinfsLinked
     WHERE natinfsLinked.folder_id = folder.id
     );
 
@@ -158,15 +158,15 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_folder folder
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = folder.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_folder folder
+         LEFT JOIN lucca_minute minute ON minute.id = folder.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE NOT EXISTS (
     SELECT 1
-    FROM lucca.lucca_minute_folder_linked_natinf natinfsLinked
+    FROM lucca_minute_folder_linked_natinf natinfsLinked
     WHERE natinfsLinked.folder_id = folder.id
     );
 
@@ -190,12 +190,12 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_closure closure
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = closure.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_closure closure
+         LEFT JOIN lucca_minute minute ON minute.id = closure.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE closure.natureRegularized = 'choice.natureRegularized.field';
 
 -- =====================================================
@@ -218,10 +218,10 @@ SELECT
     town.name AS ville,
     interco.name AS interco,
     department.code AS departement
-FROM lucca.lucca_minute_closure closure
-         LEFT JOIN lucca.lucca_minute minute ON minute.id = closure.minute_id
-    LEFT JOIN lucca.lucca_minute_plot plot ON minute.plot_id = plot.id
-    LEFT JOIN lucca.lucca_parameter_town town ON plot.town_id = town.id
-    LEFT JOIN lucca.lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
-    LEFT JOIN lucca.lucca_department department ON department.id = minute.department_id
+FROM lucca_minute_closure closure
+         LEFT JOIN lucca_minute minute ON minute.id = closure.minute_id
+    LEFT JOIN lucca_minute_plot plot ON minute.plot_id = plot.id
+    LEFT JOIN lucca_parameter_town town ON plot.town_id = town.id
+    LEFT JOIN lucca_parameter_intercommunal interco ON town.intercommunal_id = interco.id
+    LEFT JOIN lucca_department department ON department.id = minute.department_id
 WHERE closure.natureRegularized != 'choice.natureRegularized.field';
