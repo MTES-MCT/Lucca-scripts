@@ -57,8 +57,8 @@ CREATE TABLE stats_history
     ville       VARCHAR(255) NOT NULL,
     interco     VARCHAR(255),
     departement VARCHAR(10)  NOT NULL,
-    id_lucca INT ,
-    id_lucca_lie INT ,
+    action_id INT ,
+    next_action_id INT ,
 
     INDEX       idx_dossier (dossier_id),
     INDEX       idx_adherent (adherent_id),
